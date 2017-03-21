@@ -1,3 +1,22 @@
+/*
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Copyright 2017, Mayo Foundation for Medical Education and Research.
+
+*/
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -22,7 +41,7 @@ fastq_record make_record(const string& id, const string& seq, const string& div,
   new_record.div= div;
   new_record.qual= qual;
   new_record.defined= true;
-  
+
   return new_record;
 }
 
@@ -38,18 +57,18 @@ void split(vector<string>& elems, const string& s, const char delim ) {
 
 bool is_pair(const fastq_record& read1, const fastq_record& read2){
   vector<string> subparts1, subparts2;
-  
+
   if(read1.id.substr(read1.id.length() - 2) == "/1" && read2.id.substr(read2.id.length() - 2) == "/2"){
     split(subparts1, read1.id, '/');
     split(subparts2, read2.id, '/');
-    
+
     if(subparts1[0] == subparts2[0]){
       return true;
     }
   }
   return false;
 }
-    
+
 
 
 void write_record(ofstream& out, const fastq_record& rec){
@@ -58,10 +77,10 @@ void write_record(ofstream& out, const fastq_record& rec){
   out << rec.div << "\n";
   out << rec.qual << "\n";
 }
-  
+
 int main(int argc, char const **argv){
-  
-  
+
+
   ifstream in_file;
   ofstream pe_file, se_file;
   string in_filename;
@@ -75,10 +94,10 @@ int main(int argc, char const **argv){
   se_file.open(se_filename.c_str(), ios::out);
   fastq_record rec_current, rec_previous;
   rec_previous.defined= false;
-  
+
   unsigned long index=0, pairs=0, singletons=0;
-  
-   
+
+
   cerr << "Splitting reads for file " << in_filename << endl;
   while(!in_file.eof()){
     /*if(index % 100000 == 0 && index > 0){
@@ -89,7 +108,7 @@ int main(int argc, char const **argv){
     if(!getline(in_file,div_line,'\n')) break;
     if(!getline(in_file,qual_line,'\n')) break;
     rec_current= make_record(id_line, seq_line, div_line, qual_line);
-    
+
     if(rec_previous.defined){
       if(is_pair(rec_previous, rec_current)){
 	write_record(pe_file, rec_previous);
@@ -104,7 +123,7 @@ int main(int argc, char const **argv){
 	singletons += 1;
       }
     }
-    
+
     rec_previous= rec_current;
     rec_current.defined= false;
   }
@@ -114,16 +133,16 @@ int main(int argc, char const **argv){
    index += 1;
    singletons += 1;
  }
- 
+
  in_file.close();
  pe_file.close();
  se_file.close();
- 
+
  //Debriefing
  cerr << "Read " << index << " sequences: " << endl << pairs << " pairs and " << singletons << " singletons." << endl;
  cerr << endl << "Written to " << pe_filename << " and " << se_filename << endl;
-  
-  
+
+
   return EXIT_SUCCESS;
-  
+
 }
