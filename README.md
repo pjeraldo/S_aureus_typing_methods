@@ -1,6 +1,11 @@
+[!DOI(https://zenodo.org/badge/85331141.svg)](https://zenodo.org/badge/latestdoi/85331141)
+
 # Supplementary information
 
 This repository contains code used for the analysis described in "Comparison of Two Whole-Genome Sequencing Methods for Analysis of Three Methicillin-Resistant *Staphylococcus aureus* Outbreaks."
+
+Release DOI:   
+[doi:10.5281/zenodo.437894](http://dx.doi.org/10.5281/zenodo.437894)
 
 The published code includes the following:
 
