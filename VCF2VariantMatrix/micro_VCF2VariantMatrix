@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# exit if any statement returns a non-zero exit code
+set -e
+
+echo "start: `date`"
+
+# check java version
+REQUIRED_MINOR_VERSION=6
+
+# grab full version string from running "java -version"
+VERSION=`java -Xmx64m -version 2>&1 | grep "java version" | awk '{ print substr($3, 2, length($3)-2); }'`
+
+# parse out the minor version number
+MINOR_VERSION=`echo $VERSION | cut -d . -f 2`
+
+# check minor version, anything less than the required version is invalid
+if [ $MINOR_VERSION -lt $REQUIRED_MINOR_VERSION ]; then
+	echo "Invalid Java version $VERSION.  Java 1.$REQUIRED_MINOR_VERSION or higher is required."
+	echo "You can check your java version by running: java -version"
+	exit 1
+fi
+
+java -Dlog4j.defaultInitOverride=true -Xms32m -cp $MICRO_HOME/conf:$MICRO_HOME/lib/* edu.mayo.cli.CommandLineApp edu.mayo.micro.cli.cmd.VCF2VariantMatrixCommand $0 $@
+
+echo "end: `date`"
