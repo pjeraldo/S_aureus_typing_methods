@@ -14,7 +14,7 @@ in your bash shell. Adjust your command if you use a different shell.
 
 ## Usage
 
-```bash
+```
 micro_VCF2VariantMatrix [--rfile <region file>] [--rthresh <region threshold>]
 [--delta <filter delta>] [--token <token symbol>]
 [--filter <filter value>] [--help] --infile <input file (VCF)> [--log]
@@ -39,25 +39,46 @@ Genomic region file.  If the genomic region file is used, it provides background
 `-s, --rthresh <region threshold>`  
                 Genomic region file threshold.  Variants above this threshold in the region file will flag the
                 genomic region to be masked, regions below this threshold will not be masked.  The threshold
-                is in terms of number of SNPs/region length.  This param is required when using a region file.
+                is in terms of number of SNPs/region length.  This parameter is required when using a region file.
                 (default=0.0001)
 
 `-d, --delta <filter delta>`  
                 When two variants are compared, the delta that is allowed to call them the same (regardless of
-                filter threshold) e.g. if delta=2 then variants with value 3 and 5 will be considered the same
-                (but not 3 and 7) even if the filter value was 4.  Default=20
+                filter threshold). For example, if delta=2, then variants with value 3 and 5 will be considered the same
+                ,but not 3 and 7, even if the filter value was 4.  Default=20
 
 `-t, --token <token symbol>`  
-                Token in the format column that the filter value will be applied to, e.g. DP, AD ect, this
+                Token in the format column that the filter value will be applied to, for example DP, AD, etc. This
                 MUST be defined if the filter argument is defined!
 
 `-f, --filter <filter value>`  
-                Filter value; so samples under this value will be interpreted as NOT variants (default = 20)
+                Filter value. Samples under this value will be interpreted as NOT variants (default = 20)
 
 `-h, --help`  
                 Print this message.
 
-
-
 `-l, --log`  
                 Generate the log file 'log.txt'. By default, the log file is not generated.
+
+## Example
+
+Assuming `merged.vfc` is a multi-sample VCF file output from a VCF merging tool like `VCFTools'` `vcf-merge`, here are a couple of usage examples.
+
+### Simple
+```bash
+micro_VCF2VariantMatrix -o merged.matrix -i merged.vcf
+```
+
+### Complete
+```bash
+micro_VCF2VariantMatrix -f 20 -d 20 -t DP -s 0.001 \
+-r positions.txt -o merged.matrix -i merged.vcf
+```
+
+## Authors
+
+Written by Daniel Quest.
+
+## Copyright
+
+Copyright 2017, Mayo Foundation for Medical Education and Research.
