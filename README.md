@@ -21,6 +21,8 @@ Two output files will be written: `input.fastq.pe` with interleaved paired reads
 
 Unless stated otherwise, the code is licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+Copyright 2017, Mayo Foundation for Medical Education and Research.
+
 ## Author information
 
 The code in this repository was written by Patricio Jeraldo and Daniel Quest.
